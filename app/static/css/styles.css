@@ -1,0 +1,96 @@
+/* app/static/css/styles.css */
+
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Fondo oscuro */
+    color: #E0E0E0; /* Color claro para el texto */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Título principal */
+h1 {
+    text-align: center;
+    color: #FFD700; /* Color dorado para el título */
+    margin-top: 20px;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+/* Estilo de la galería de películas */
+.movies-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin: 0 10%;
+}
+
+/* Cada tarjeta de película */
+.movie-card {
+    background-color: #1C1C1C; /* Fondo oscuro para las tarjetas */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más destacada */
+    transition: transform 0.3s ease-in-out;
+    border: 2px solid #333; /* Borde oscuro */
+}
+
+.movie-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Imagen de la película */
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #444; /* Borde más oscuro debajo de la imagen */
+}
+
+/* Contenido de la tarjeta */
+.movie-card .movie-info {
+    padding: 15px;
+}
+
+.movie-card h2 {
+    font-size: 1.4em;
+    margin: 10px 0;
+    color: #FFD700; /* Título de la película en dorado */
+}
+
+.movie-card p {
+    font-size: 1em;
+    line-height: 1.5;
+    color: #D3D3D3; /* Texto más claro para una mejor visibilidad */
+}
+
+.movie-card p strong {
+    color: #FF6347; /* Color tomate para los textos destacados */
+}
+
+/* Estilo de los géneros y actores */
+.movie-card .movie-details {
+    margin-top: 15px;
+}
+
+.movie-card .movie-details p {
+    font-size: 0.95em;
+    color: #A9A9A9; /* Gris más suave para detalles */
+}
+
+.movie-card .movie-details p strong {
+    font-weight: bold;
+    color: #FFD700; /* Destacar con dorado */
+}
+
+/* Fondo oscuro para enlaces si es necesario */
+a {
+    color: #FFD700; /* Enlaces en dorado */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
