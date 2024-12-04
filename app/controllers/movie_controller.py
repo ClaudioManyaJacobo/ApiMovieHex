@@ -9,3 +9,7 @@ class MovieController:
     def index(self):
         movies = self.movie_service.get_movies()
         return render_template('movies.html', movies=movies)
+
+    def show(self, movie_id):
+        movie = self.movie_service.get_movie_details(movie_id)  # Llamada correcta
+        return render_template('show.html', movie=movie)

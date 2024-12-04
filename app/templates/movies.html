@@ -1,33 +1,19 @@
 <!-- app/templates/movies.html -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Películas</title>
-    
-    <!-- Referencia al favicon.ico -->
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+{% extends 'base.html' %}
 
-    <!-- Referencia al archivo CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <h1>Películas Disponibles en el Catalago</h1>
-    <div class="movies-container">
-        {% for movie in movies %}
-            <div class="movie-card">
+{% block title %}Peliculas de Ciencia Ficción{% endblock %}
+
+{% block content %}
+
+<h1>Películas Disponibles de Ciencia Ficción</h1>
+<div class="movies-container">
+    {% for movie in movies %}
+        <div class="movie-card">
+            <!-- Enlace que lleva a la página de detalles de la película -->
+            <a href="{{ url_for('movie.show', movie_id=movie.id) }}">
                 <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                <div class="movie-info">
-                    <h2>{{ movie.title }}</h2>
-                    <p>{{ movie.overview }}</p>
-                    <div class="movie-details">
-                        <p><strong>Géneros:</strong> {{ movie.genres | join(', ') }}</p>
-                        <p><strong>Actores:</strong> {{ movie.actors | join(', ') }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

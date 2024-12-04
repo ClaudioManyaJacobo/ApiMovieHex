@@ -3,20 +3,54 @@
 /* Estilo general */
 body {
     font-family: Arial, sans-serif;
-    background-color: #121212; /* Fondo oscuro */
-    color: #E0E0E0; /* Color claro para el texto */
+    background-color: #000000;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
+    color: #382348;
 }
 
-/* Título principal */
+/* Barra de navegación */
+nav {
+    background-color: #333;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+nav ul li a:hover {
+    background-color: #f60909;
+    color: white;
+}
+
+/* Estilo del título h1 */
 h1 {
     text-align: center;
-    color: #FFD700; /* Color dorado para el título */
-    margin-top: 20px;
-    font-size: 2.5em;
-    font-weight: bold;
+    color: #333;
+    margin-top: 100px; /* Aquí agregamos un margen superior */
 }
 
 /* Estilo de la galería de películas */
@@ -30,12 +64,11 @@ h1 {
 
 /* Cada tarjeta de película */
 .movie-card {
-    background-color: #1C1C1C; /* Fondo oscuro para las tarjetas */
+    background-color: #fff;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más destacada */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
-    border: 2px solid #333; /* Borde oscuro */
 }
 
 .movie-card:hover {
@@ -46,7 +79,7 @@ h1 {
 .movie-card img {
     width: 100%;
     height: auto;
-    border-bottom: 2px solid #444; /* Borde más oscuro debajo de la imagen */
+    border-bottom: 2px solid #eee;
 }
 
 /* Contenido de la tarjeta */
@@ -55,42 +88,19 @@ h1 {
 }
 
 .movie-card h2 {
-    font-size: 1.4em;
+    font-size: 1.2em;
     margin: 10px 0;
-    color: #FFD700; /* Título de la película en dorado */
+    color: #555;
 }
 
 .movie-card p {
-    font-size: 1em;
-    line-height: 1.5;
-    color: #D3D3D3; /* Texto más claro para una mejor visibilidad */
+    font-size: 0.9em;
+    line-height: 1.4;
+    color: #666;
 }
 
 .movie-card p strong {
-    color: #FF6347; /* Color tomate para los textos destacados */
+    color: #333;
 }
 
-/* Estilo de los géneros y actores */
-.movie-card .movie-details {
-    margin-top: 15px;
-}
 
-.movie-card .movie-details p {
-    font-size: 0.95em;
-    color: #A9A9A9; /* Gris más suave para detalles */
-}
-
-.movie-card .movie-details p strong {
-    font-weight: bold;
-    color: #FFD700; /* Destacar con dorado */
-}
-
-/* Fondo oscuro para enlaces si es necesario */
-a {
-    color: #FFD700; /* Enlaces en dorado */
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}

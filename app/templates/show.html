@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
+    <div class="detail_">
+        <h1 class="movie-title">{{ movie.title }}</h1>
+        <div class="movie-content">
+            <img class="movie-poster" src="{{ movie.poster_path }}" alt="{{ movie.title }}">
+            <div class="movie-details">
+                <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+                <p><strong>Genres:</strong> {{ movie.genres | join(', ') }}</p>
+                <p><strong>Actors:</strong> {{ movie.actors | join(', ') }}</p>
+            </div>
+        </div>
+        <p class="movie-overview">{{ movie.overview }}</p>
+
+        {% if movie.video_url %}
+            <div class="movie-video">
+                <p><strong>Watch Trailer:</strong></p>
+                <!-- Incrustar el video de YouTube usando el filtro -->
+                <iframe width="560" height="315" src="{{ movie.video_url | youtube_embed }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
