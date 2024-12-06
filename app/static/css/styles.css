@@ -1,5 +1,3 @@
-/* app/static/css/styles.css */
-
 /* Estilo general */
 body {
     font-family: Arial, sans-serif;
@@ -11,46 +9,97 @@ body {
 
 /* Barra de navegación */
 nav {
-    background-color: #333;
-    padding: 10px 20px;
+    background-color: #222;  
+    padding: 15px 40px;  
     position: fixed;
-    width: 100%;
     top: 0;
     left: 0;
+    width: 100%;
     z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease; 
 }
 
+/* Estilo para el menú de navegación */
 nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
+/* Estilo de los elementos de la lista */
 nav ul li {
-    margin: 0 20px;
+    margin: 0 30px;
 }
 
+/* Estilo de los enlaces */
 nav ul li a {
-    color: white;
+    color: #fff;
     text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase; 
+    padding: 12px 18px;
+    border-radius: 30px; 
+    transition: background-color 0.3s, transform 0.3s; 
 }
 
+/* Efecto de hover en los enlaces */
 nav ul li a:hover {
-    background-color: #f60909;
+    background-color: #ff5733;  
+    color: #fff;
+    transform: scale(1.1);  
+}
+
+/* Estilo para el formulario de búsqueda */
+nav form {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+nav form input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    width: 200px;
+    transition: border-color 0.3s;
+}
+
+/* Efecto en el input cuando está enfocado */
+nav form input[type="text"]:focus {
+    border-color: #ff5733;  
+    outline: none;
+}
+
+/* Estilo del botón de búsqueda */
+nav form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-left: 10px;
+    background-color: #ff5733;
     color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+/* Efecto de hover en el botón de búsqueda */
+nav form button:hover {
+    background-color: #c0392b;
+    transform: scale(1.1);
 }
 
 /* Estilo del título h1 */
 h1 {
     text-align: center;
     color: #333;
-    margin-top: 100px; /* Aquí agregamos un margen superior */
+    margin-top: 100px; 
 }
 
 /* Estilo de la galería de películas */
@@ -103,4 +152,10 @@ h1 {
     color: #333;
 }
 
+.custom-favicon img {
+    width: 48px;  /* Ajusta el tamaño según lo que desees */
+    height: 48px; /* Mantén la proporción si es necesario */
+    object-fit: contain; /* Asegura que la imagen se ajuste dentro del área sin distorsionarse */
+    margin: 10px; /* Puedes agregar espacio alrededor si lo deseas */
+}
 

@@ -1,19 +1,40 @@
-<!-- app/templates/movies.html -->
 {% extends 'base.html' %}
-
-{% block title %}Peliculas de Ciencia Ficción{% endblock %}
-
+{% block title %}
+    {% if request.args.get('query') %}
+        Resultados de la búsqueda - "{{ request.args.get('query') }}"
+    {% else %}
+        Películas Disponibles
+    {% endif %}
+{% endblock %}
 {% block content %}
 
-<h1>Películas Disponibles de Ciencia Ficción</h1>
+<form action="{{ url_for('search') }}" method="get" class="search-form">
+    <input type="text" name="query" placeholder="Buscar películas..." value="{{ request.args.get('query') }}" required>
+    <button type="submit">Buscar</button>
+</form>
+
+<h1>
+    {% if request.args.get('query') %}
+        Resultados de la búsqueda - "{{ request.args.get('query') }}"
+    {% else %}
+        Películas Disponibles
+    {% endif %}
+</h1>
+
 <div class="movies-container">
-    {% for movie in movies %}
-        <div class="movie-card">
-            <!-- Enlace que lleva a la página de detalles de la película -->
-            <a href="{{ url_for('movie.show', movie_id=movie.id) }}">
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-            </a>
-        </div>
-    {% endfor %}
+    {% if movies %}
+        {% for movie in movies %}
+            {% if movie.poster_path %}
+                <div class="movie-card">
+                    <a href="{{ url_for('movie.show', movie_id=movie.id) }}">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Poster+No+Disponible';">
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No se encontraron resultados para "{{ request.args.get('query') }}"</p>
+    {% endif %}
 </div>
+
 {% endblock %}

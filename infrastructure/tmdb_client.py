@@ -1,37 +1,104 @@
+# infrastructure/tmdb_client.py
 import requests
-from app.config import Config
+from app.config.config import Config
 
 class TMDBClient:
     def __init__(self):
+        # Inicializar los valores de configuración (API Key, URL base, idioma y sesión)
         self.api_key = Config.API_KEY
         self.base_url = Config.BASE_URL
         self.language = Config.LANGUAGE
-        self.session = requests.Session()  # Crear una sesión persistente
+        self.session = requests.Session()  # Usar una sesión persistente para las peticiones HTTP
 
-    # Obtener películas de Ciencia Ficción
-    def get_sci_fi_movies(self):
-        genre_id = 878  # ID de Ciencia Ficción
-        url = f"{self.base_url}/discover/movie?api_key={self.api_key}&language={self.language}&with_genres={genre_id}&page=1"
-        response = self.session.get(url)  # Usar la sesión persistente
-        if response.status_code == 200:
-            return response.json()['results']
-        else:
-            return []
+    # Realiza una solicitud GET a la API de TMDB.
+    def _get(self, endpoint, params=None):
 
+        url = f"{self.base_url}/{endpoint}"  # Construir la URL completa
+        params = params or {}  # Si no se pasan parámetros, usar un diccionario vacío
+        params.update({
+            'api_key': self.api_key,  # Incluir la API Key
+            'language': self.language  # Incluir el idioma
+        })
+        
+        response = self.session.get(url, params=params)  # Realizar la solicitud GET
+        if response.status_code == 200:  # Si la solicitud es exitosa (código 200)
+            return response.json()  # Retornar la respuesta en formato JSON
+        print(f"Error {response.status_code}: {url}")  # En caso de error, imprimir el código de error y la URL
+        return {}  # Retornar un diccionario vacío si hubo un error
+
+    # Obtiene una lista de películas generales desde la API de TMDB.
+    def general_movies(self, page=5, max_movies=20):
+
+        movies = []  # Lista para almacenar las películas obtenidas
+        seen_ids = set()  # Conjunto para asegurarse de no obtener películas duplicadas
+        
+        while len(movies) < max_movies:  # Mientras no hayamos obtenido el número máximo de películas
+            data = self._get('discover/movie', {'page': page})  # Obtener las películas de la página actual
+            for movie in data.get('results', []):  # Iterar sobre las películas en los resultados
+                if movie['id'] not in seen_ids:  # Si la película no se ha agregado aún
+                    movies.append(self._map_movie_data(movie))  # Mapear los datos de la película y agregarla a la lista
+                    seen_ids.add(movie['id'])  # Marcar la película como vista (para no agregarla otra vez)
+                if len(movies) >= max_movies:  # Si hemos alcanzado el número máximo de películas
+                    break
+            if data.get('page') < data.get('total_pages'):  # Si hay más páginas de resultados
+                page += 1  # Pasar a la siguiente página
+            else:
+                break  # Si no hay más páginas, terminar el ciclo
+        return movies  # Retornar la lista de películas obtenidas
+
+    # Obtiene los detalles de una película específica.
     def get_movie_details(self, movie_id):
-        url = f"{self.base_url}/movie/{movie_id}?api_key={self.api_key}&language={self.language}"
-        response = self.session.get(url)  # Usar la sesión persistente
-        return response.json() if response.status_code == 200 else {}
+        return self._get(f"movie/{movie_id}")  # Llamar al endpoint correspondiente para obtener los detalles de la película
 
-    def get_movie_credits(self, movie_id):
-        url = f"{self.base_url}/movie/{movie_id}/credits?api_key={self.api_key}"
-        response = self.session.get(url)  # Usar la sesión persistente
-        return response.json() if response.status_code == 200 else {}
+    # Busca películas basadas en una consulta de texto.
+    def search_movies(self, query):
+        return self._get('search/movie', {'query': query}).get('results', [])  # Retornar los resultados de la búsqueda
+
+    # Mapea los datos de una película a un formato personalizado.
+    def _map_movie_data(self, movie_data):
+ 
+        movie = {
+            'title': movie_data.get('title', ''),  # Título de la película
+            'overview': movie_data.get('overview', ''),  # Descripción de la película
+            'release_date': movie_data.get('release_date', ''),  # Fecha de estreno
+            'poster_path': f"https://image.tmdb.org/t/p/w500{movie_data.get('poster_path', '')}",  # URL del poster de la película
+            'genres': [genre['name'] for genre in movie_data.get('genres', [])],  # Lista de géneros de la película
+            'actors': self.get_movie_actors(movie_data.get('id')),  # Obtener los actores de la película
+            'id': movie_data.get('id'),  # ID de la película
+            'video_url': self.get_video_url(movie_data.get('id')),  # Obtener la URL del video (trailer)
+            'runtime': movie_data.get('runtime', 0),  # Duración de la película en minutos
+            'rating': movie_data.get('vote_average', 0),  # Calificación promedio de la película
+            'budget': movie_data.get('budget', 0),  # Presupuesto de la película
+            'revenue': movie_data.get('revenue', 0),  # Ingresos de la película
+            'original_language': movie_data.get('original_language', ''),  # Idioma original de la película
+        }
+        return movie
     
-    def get_movie_videos(self, movie_id):
-        url = f"{self.base_url}/movie/{movie_id}/videos?api_key={self.api_key}&language={self.language}"
-        response = self.session.get(url)  # Usar la sesión persistente
-        if response.status_code == 200:
-            return response.json().get('results', [])
+    # Obtiene los actores principales de una película.
+    def get_movie_actors(self, movie_id):
+    
+        url = f"{self.base_url}/movie/{movie_id}/credits?api_key={self.api_key}&language={self.language}"
+        response = self.session.get(url)  # Realizar la solicitud GET para obtener los créditos de la película
+
+        actors = []  # Lista para almacenar los actores
+        if response.status_code == 200:  # Si la solicitud es exitosa (código 200)
+            data = response.json()  # Obtener los datos de la respuesta
+            actors = [actor['name'] for actor in data.get('cast', [])][:5]  # Limitar a los primeros 5 actores
+            # print(f"Actores para la película {movie_id}: {actors}")  # Imprimir los actores obtenidos para depuración
         else:
-            return []
+            print(f"Error al obtener actores para la película {movie_id}: {response.status_code}")  # En caso de error, imprimir el código de error
+        
+        return actors  # Retornar la lista de actores
+
+    # Obtiene la URL del video (trailer) de una película.
+    def get_video_url(self, movie_id):
+        
+        url = f"{self.base_url}/movie/{movie_id}/videos?api_key={self.api_key}&language={self.language}"
+        response = self.session.get(url)  # Realizar la solicitud GET para obtener los videos de la película
+        
+        if response.status_code == 200:  # Si la solicitud es exitosa (código 200)
+            video_results = response.json().get('results', [])  # Obtener los resultados de videos
+            if video_results:  # Si hay resultados de videos
+                # Obtener el primer trailer y devolver la URL
+                return f"https://www.youtube.com/watch?v={video_results[0]['key']}"
+        return ''

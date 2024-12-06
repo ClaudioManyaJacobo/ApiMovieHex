@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/welcome.css') }}">
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="loader">
+            <div class="film-reel"></div>
+        </div>
+        <h1>Bienvenido al Cine</h1>
+        <p>Prepárate para una nueva aventura cinematográfica...</p>
+    </div>
+
+    <div class="cinema-lights"></div>
+
+    <script>
+        
+        setTimeout(function() {
+            window.location.href = "/movies"; 
+        }, 3000);  
+    </script>
+</body>
+</html>

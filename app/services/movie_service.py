@@ -1,15 +1,21 @@
-# app/services/movie_service.py
-from infrastructure.api_service import MovieAPIService
+# application/controllers/movie_service.py
+from domain.movie_repository import MovieRepository
+from domain.movie import Movie
+from typing import List
 
+# Clase para gestionar las películas
 class MovieService:
-    def __init__(self):
-        self.api_service = MovieAPIService()
+    def __init__(self, movie_repository: MovieRepository):
+        self.movie_repository = movie_repository
 
-    def get_movies(self):
-        movies = self.api_service.get_movies()  # Asignamos directamente la lista de películas
-        return movies
+    # Método para obtener todas las películas
+    def get_movies(self) -> List[Movie]:
+        return self.movie_repository.get_movies()
 
-    def get_movie_details(self, movie_id):
-        return self.api_service.get_movie_details(movie_id)
+    # Método para obtener los detalles de una película
+    def get_movie_details(self, movie_id: int) -> Movie:
+        return self.movie_repository.get_movie_details(movie_id)
     
-    
+    # Método para buscar películas
+    def search_movies(self, query: str) -> List[Movie]:
+        return self.movie_repository.search_movies(query)
