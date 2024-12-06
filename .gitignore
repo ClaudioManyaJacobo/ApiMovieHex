@@ -1,0 +1,38 @@
+# Ignorar el entorno virtual (asumiendo que lo llamas "venv")
+venv/
+*.venv/
+
+# Archivos de configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos compilados de Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Archivos de configuración específicos de sistemas operativos
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Archivos de log
+*.log
+
+# Archivos de bases de datos locales
+*.sqlite3
+*.db
+
+# Archivos temporales de editor de texto
+*.swp
+*.swo
+
+# Dependencias instaladas
+*.egg
+*.egg-info
+dist/
+build/
+*.bak
+
+# Archivos de configuración de Python (si usas algún archivo específico)
+*.env
+*.flaskenv
