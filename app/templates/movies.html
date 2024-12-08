@@ -1,23 +1,24 @@
-{% extends 'base.html' %}
-{% block title %}
-    {% if request.args.get('query') %}
-        Resultados de la búsqueda - "{{ request.args.get('query') }}"
-    {% else %}
-        Películas Disponibles
-    {% endif %}
-{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Peliculizate{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 
-<form action="{{ url_for('search') }}" method="get" class="search-form">
-    <input type="text" name="query" placeholder="Buscar películas..." value="{{ request.args.get('query') }}" required>
-    <button type="submit">Buscar</button>
-</form>
-
+    <title>
+        {% if request.args.get('query') %}
+            <h1>Resultados de la búsqueda - "{{ request.args.get('query') }}"</h1>
+        {% endif %}
+    </title>
+</head>
+<body>
+<!-- Incluir la barra de navegación -->
+{% include 'barraNav.html' %}
 <h1>
     {% if request.args.get('query') %}
         Resultados de la búsqueda - "{{ request.args.get('query') }}"
-    {% else %}
-        Películas Disponibles
     {% endif %}
 </h1>
 
@@ -37,4 +38,6 @@
     {% endif %}
 </div>
 
-{% endblock %}
+</body>
+</html>
+

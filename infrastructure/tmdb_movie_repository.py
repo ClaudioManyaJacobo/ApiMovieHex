@@ -27,14 +27,17 @@ class TMDBMovieRepository(MovieRepository):
     # Método para mapear los datos de una película
     def _map_movie_data(self, movie_data: dict) -> Movie:
         video_url = self.tmdb_client.get_video_url(movie_data.get('id'))
+        actors_and_director = self.tmdb_client.credits_movie(movie_data.get('id'))
 
         return Movie(
             title=movie_data.get('title', 'Unknown Title'),
             overview=movie_data.get('overview', 'No overview available'),
             release_date=movie_data.get('release_date', 'Unknown Release Date'),
-            poster_path=movie_data.get('poster_path', ''),
+            poster_path=f"https://image.tmdb.org/t/p/w500{movie_data.get('poster_path', '')}",
+            backdrop_path=f"https://image.tmdb.org/t/p/w1280{movie_data.get('backdrop_path', '')}",
             genres=[genre['name'] for genre in movie_data.get('genres', [])], 
-            actors=self.tmdb_client.get_movie_actors(movie_data.get('id'))[:5],  
+            actors=actors_and_director['actors'],  # Lista de diccionarios con nombre y foto
+            director=actors_and_director['director'],   # Lista de diccionarios con nombre y foto
             movie_id=movie_data.get('id'),
             video_url=video_url, 
             runtime=movie_data.get('runtime', 0),
@@ -43,4 +46,5 @@ class TMDBMovieRepository(MovieRepository):
             revenue=movie_data.get('revenue', 0),
             original_language=movie_data.get('original_language', 'Unknown'),
         )
+
 

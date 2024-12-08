@@ -56,14 +56,16 @@ class TMDBClient:
 
     # Mapea los datos de una película a un formato personalizado.
     def _map_movie_data(self, movie_data):
- 
+        actors_director = self.credits_movie(movie_data.get('id'))  # Obtener actores y director de la película
         movie = {
             'title': movie_data.get('title', ''),  # Título de la película
             'overview': movie_data.get('overview', ''),  # Descripción de la película
             'release_date': movie_data.get('release_date', ''),  # Fecha de estreno
             'poster_path': f"https://image.tmdb.org/t/p/w500{movie_data.get('poster_path', '')}",  # URL del poster de la película
+            'backdrop_path': f"https://image.tmdb.org/t/p/w1280{movie_data.get('backdrop_path', '')}",  # URL del backdrop de la película
             'genres': [genre['name'] for genre in movie_data.get('genres', [])],  # Lista de géneros de la película
-            'actors': self.get_movie_actors(movie_data.get('id')),  # Obtener los actores de la película
+            'actors': actors_director['actors'],  # Obtener los actores de la película
+            'director': actors_director['director'],   # Obtener los actores de la película
             'id': movie_data.get('id'),  # ID de la película
             'video_url': self.get_video_url(movie_data.get('id')),  # Obtener la URL del video (trailer)
             'runtime': movie_data.get('runtime', 0),  # Duración de la película en minutos
@@ -73,22 +75,35 @@ class TMDBClient:
             'original_language': movie_data.get('original_language', ''),  # Idioma original de la película
         }
         return movie
-    
-    # Obtiene los actores principales de una película.
-    def get_movie_actors(self, movie_id):
-    
+     
+    # Obtiene los actores y el director de una película.
+    def credits_movie(self, movie_id):
         url = f"{self.base_url}/movie/{movie_id}/credits?api_key={self.api_key}&language={self.language}"
-        response = self.session.get(url)  # Realizar la solicitud GET para obtener los créditos de la película
+        response = self.session.get(url)
+        actors = []
+        director = 'Unknown Director'
 
-        actors = []  # Lista para almacenar los actores
-        if response.status_code == 200:  # Si la solicitud es exitosa (código 200)
-            data = response.json()  # Obtener los datos de la respuesta
-            actors = [actor['name'] for actor in data.get('cast', [])][:5]  # Limitar a los primeros 5 actores
-            # print(f"Actores para la película {movie_id}: {actors}")  # Imprimir los actores obtenidos para depuración
+        if response.status_code == 200:
+            data = response.json()
+            
+            for member in data.get('crew', []):
+                if member.get('job') == 'Director':
+                    director = member.get('name')
+                    break  
+
+            actors = [{
+                'name': actor['name'],
+                'photo': f"https://image.tmdb.org/t/p/w500{actor['profile_path']}" if actor.get('profile_path') else None,
+                'profile_url': f"https://www.themoviedb.org/person/{actor['id']}"
+            } for actor in data.get('cast', [])][:9] 
+
         else:
-            print(f"Error al obtener actores para la película {movie_id}: {response.status_code}")  # En caso de error, imprimir el código de error
+            print(f"Error al obtener actores y director para la película {movie_id}: {response.status_code}")
         
-        return actors  # Retornar la lista de actores
+        return {
+            'director': director,
+            'actors': actors
+        }
 
     # Obtiene la URL del video (trailer) de una película.
     def get_video_url(self, movie_id):

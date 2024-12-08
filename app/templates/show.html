@@ -1,67 +1,111 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <a href="javascript:void(0);" class="back-button" onclick="window.history.back();">Back</a>
 
-{% block title %}{{ movie.title }}{% endblock %}
-
-{% block content %}
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/show.css') }}">
-<div class="main-container">
-    
-    <div class="detail_">
+    <div id="snow-container"></div>
+    <script src="{{ url_for('static', filename='js/nieve.js') }}"></script> 
+    <div class="card">
         
-        <h1 class="movie-title">{{ movie.title if movie.title else '<span class="unavailable">Título no disponible</span>' }}</h1>
-        
-        
-        <div class="movie-content">
-            
+        <div class="card-cover">
             <img 
-                src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" 
-                alt="Poster de {{ movie.title }}" 
-                class="movie-poster"
-                onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Poster+No+Disponible';"
+                src="https://image.tmdb.org/t/p/w1280{{ movie.backdrop_path }}" 
+                alt="Backdrop de {{ movie.title }}" 
+                class="movie-backdrop"
+                onerror="this.onerror=null; this.src='https://via.placeholder.com/1280x720?text=Backdrop+No+Disponible';"
             >
-            
-            
-            <div class="movie-details">
-                <p><strong>Fecha de Estreno:</strong> {{ movie.release_date or '<span class="unavailable">Fecha no disponible</span>' | safe }}</p>
-                <p><strong>Géneros:</strong> {{ movie.genres | join(', ') if movie.genres else '<span class="unavailable">Géneros no disponibles</span>' | safe }}</p>
-                <p><strong>Actores:</strong> {{ movie.actors | join(', ') if movie.actors else '<span class="unavailable">Actores no disponibles</span>' | safe }}</p>
-                <p><strong>Duración:</strong> {{ movie.runtime if movie.runtime else '<span class="unavailable">La duración sigue siendo un secreto... ¿cuánto durará? ¡Aún lo averiguamos!</span>' }} minutos</p>
-                <p><strong>Valoración:</strong> {{ movie.rating if movie.rating else '<span class="unavailable">Valoración no disponible</span>' }}/10</p>
-                <p><strong>Idioma Original:</strong> 
-                    {% if movie.original_language == 'en' %}
-                        Inglés
-                    {% elif movie.original_language == 'es' %}
-                        Español
-                    {% elif movie.original_language == 'fr' %}
-                        Francés
-                    {% elif movie.original_language == 'de' %}
-                        Alemán
-                    {% elif movie.original_language == 'it' %}
-                        Italiano
-                    {% elif movie.original_language == 'pt' %}
-                        Portugués
-                    {% elif movie.original_language == 'ja' %}
-                        Japonés
-                    {% elif movie.original_language == 'ko' %}
-                        Coreano
-                    {% elif movie.original_language == 'zh' %}
-                        Chino
-                    {% elif movie.original_language == 'ru' %}
-                        Ruso
-                    {% elif movie.original_language == 'ar' %}
-                        Árabe
-                    {% elif movie.original_language == 'hi' %}
-                        Hindi
+        </div>
+
+        <div class="card-content">
+            <div class="card-image">
+                <img 
+                    src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" 
+                    alt="Poster de {{ movie.title }}" 
+                    onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Poster+No+Disponible';"
+                >
+            </div>
+
+            <div class="card-details">
+                <h1 class="movie-title">{{ movie.title if movie.title else '<span class="unavailable">Título no disponible</span>' | safe }}</h1>
+                <p><strong class="release-date-label">Fecha de Estreno:</strong> {{ movie.release_date or '<span class="unavailable">Fecha no disponible</span>' | safe }}</p>
+                <p><strong class="release-date-label">Director:</strong> {{ movie.director or '<span class="unavailable"> Director no disponible </span>' | safe }}</p>
+                <p><strong class="release-date-label">Duración:</strong> 
+                    {% if movie.runtime %}
+                        {{ movie.runtime }} minutos
                     {% else %}
-                        {{ movie.original_language or '<span class="unavailable">Idioma no disponible</span>' | safe }}
+                        <span class="unavailable">La duración sigue siendo un secreto... ¿cuánto durará? ¡Aún lo averiguamos!</span>
                     {% endif %}
                 </p>
                 
+                <p><strong class="release-date-label">Idioma Original:</strong> 
+                    {% if movie.original_language == 'en' %}Inglés
+                    {% elif movie.original_language == 'es' %}Español
+                    {% elif movie.original_language == 'fr' %}Francés
+                    {% elif movie.original_language == 'de' %}Alemán
+                    {% elif movie.original_language == 'it' %}Italiano
+                    {% elif movie.original_language == 'pt' %}Portugués
+                    {% elif movie.original_language == 'ja' %}Japonés
+                    {% elif movie.original_language == 'ko' %}Coreano
+                    {% elif movie.original_language == 'zh' %}Chino
+                    {% elif movie.original_language == 'ru' %}Ruso
+                    {% elif movie.original_language == 'ar' %}Árabe
+                    {% elif movie.original_language == 'hi' %}Hindi
+                    {% else %}{{ movie.original_language or '<span class="unavailable">Idioma no disponible</span>' | safe }}
+                    {% endif %}
+                </p>
+
+                <div class="genres">
+                    {% for genre in movie.genres %}
+                        <span>{{ genre }}</span>
+                    {% endfor %}
+                </div>
             </div>
         </div>
+        <div class="card-valoracion">
+            
+            <p class="valoracion-header">
+                Valoración: <span class="rating-number">{{ movie.rating }}/10</span>
+            </p>
+            <div class="rating-stars">
+                {% for i in range(1, 6) %}
+                    {% if i <= movie.rating // 2 %}
+                        <span class="star filled"></span> <!-- Estrella llena -->
+                    {% elif i == movie.rating // 2 + 1 and movie.rating % 2 != 0 %}
+                        <span class="star half"></span> <!-- Estrella media si es decimal -->
+                    {% else %}
+                        <span class="star"></span> <!-- Estrella vacía -->
+                    {% endif %}
+                {% endfor %}
+
+        </div>
         
-        
+    </div>
+    </div>
+
+    <div class="social-buttons">
+        <a href="https://youtube.com/@ninoforger9776?si=h8iF_wuxgs941nqW" target="_blank" class="social-button youtube">
+            <img src="/static/images/youtube.png" alt="YouTube" class="social-icon">
+            YouTube
+        </a>
+        <a href="https://github.com/ClaudioManyaJacobo" target="_blank" class="social-button github">
+            <img src="/static/images/github.png" alt="GitHub" class="social-icon">
+            GitHub
+        </a>
+        <a href="https://x.com/ManyaJacobo" target="_blank" class="social-button twitter">
+            <img src="/static/images/twitter.png" alt="Twitter" class="social-icon">
+            Twitter
+        </a>
+    </div>
+    
+    <div class="card-footer">
+        <h2>Resumen</h2>
         <p class="movie-overview">
             {% if movie.overview %}
                 {{ movie.overview | safe }}
@@ -69,8 +113,7 @@
                 <span class="unavailable">Resumen no disponible</span>
             {% endif %}
         </p>
-        
-        
+        <!-- Información de presupuesto y recaudación -->
         {% if movie.budget or movie.revenue %}
             {% if movie.budget %}
                 <p><strong>Presupuesto:</strong> ${{ movie.budget | format_number }}</p>
@@ -83,23 +126,39 @@
                 <p><strong>Recaudación:</strong> <span class="unavailable">Información no disponible</span></p>
             {% endif %}
         {% else %}
-            <p><strong >Aviso: </strong><span  class="unavailable">Esta película fue distribuida al público en general, y no se dispone 
-                de información sobre el presupuesto y la recaudación.</span></p>
+            <p><strong>Aviso: </strong><span class="unavailable">Esta película fue distribuida al público en general, y no se dispone de información sobre el presupuesto y la recaudación.</span></p>
         {% endif %}
 
-        
         {% if movie.video_url %}
-            <div class= "movie-video-container">
-                <iframe 
-                    src="{{ movie.video_url | youtube_embed }}" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
+            <a href="{{ movie.video_url }}" target="_blank" class="trailer-button">Mirar tráiler</a>
         {% else %}
             <p><strong>Tráiler no disponible:</strong> <span class="unavailable">No se encontró un tráiler para esta película. Tal vez aún no se ha lanzado o no ha sido publicado en línea.</span></p>
         {% endif %}
     </div>
-</div>
-{% endblock %}
+    <div class="card-footer">
+        <h2>Actores: </h2>
+        {% if movie.actors %}
+            <ul class="actor-list">
+                {% for actor in movie.actors %}
+                    {% if actor.photo %}
+                        <li class="actor">
+                            <a href="{{ actor.profile_url }}" target="_blank">
+                                <img src="{{ actor.photo }}" alt="{{ actor.name }}" class="actor-photo">
+                            </a>
+                            <p class="actor-name">{{ actor.name }}</p>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <span class="unavailable">Actores no disponibles</span>
+        {% endif %}
+    </div>
+    <div class="card-simple">
+        <p class="card-text">
+            Gracias a la API de TMDB por proporcionar datos y recursos de películas. Las imágenes y la información de las películas son propiedad de sus respectivos autores y se utilizan únicamente con fines informativos. Todos los derechos reservados. Para más detalles, visita <a href="https://www.themoviedb.org/" target="_blank">TMDB</a>.
+        </p>
+    </div>
+
+</body>
+</html>

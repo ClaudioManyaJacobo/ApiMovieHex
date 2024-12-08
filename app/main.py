@@ -1,4 +1,4 @@
-# app/main.py
+"""# app/main.py
 from flask import Flask, redirect, render_template
 from app.controllers.movie_controller import MovieController
 import re
@@ -70,3 +70,5 @@ def search():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+"""

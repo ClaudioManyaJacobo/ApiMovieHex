@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Peliculizate{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/barraNav.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('movie_index') }}" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Peliculizate Logo" class="logo-image">
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('movie_index') }}">Inicio</a></li>
+                <li><a href="#about">Sobre Nosotros</a></li>
+                <li><a href="#contact">Contacto</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)">Más</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#support">Soporte</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form action="{{ url_for('search') }}" method="get" class="search-bar">
+                <input type="text" name="query" placeholder="Buscar películas..." 
+                       value="{{ request.args.get('query', '') }}" required>
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

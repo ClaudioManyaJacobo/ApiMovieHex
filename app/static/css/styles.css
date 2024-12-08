@@ -1,105 +1,15 @@
 /* Estilo general */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #000000;
+    font-family: 'Arial', sans-serif;
+    background-color: #0c0c0c;
     margin: 0;
     padding: 0;
-    color: #382348;
+    color: #f5f5f5;
+    line-height: 1.6;
 }
 
-/* Barra de navegación */
-nav {
-    background-color: #222;  
-    padding: 15px 40px;  
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
-    transition: background-color 0.3s ease; 
-}
-
-/* Estilo para el menú de navegación */
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Estilo de los elementos de la lista */
-nav ul li {
-    margin: 0 30px;
-}
-
-/* Estilo de los enlaces */
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: 600;
-    text-transform: uppercase; 
-    padding: 12px 18px;
-    border-radius: 30px; 
-    transition: background-color 0.3s, transform 0.3s; 
-}
-
-/* Efecto de hover en los enlaces */
-nav ul li a:hover {
-    background-color: #ff5733;  
-    color: #fff;
-    transform: scale(1.1);  
-}
-
-/* Estilo para el formulario de búsqueda */
-nav form {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-nav form input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #ddd;
-    border-radius: 25px;
-    width: 200px;
-    transition: border-color 0.3s;
-}
-
-/* Efecto en el input cuando está enfocado */
-nav form input[type="text"]:focus {
-    border-color: #ff5733;  
-    outline: none;
-}
-
-/* Estilo del botón de búsqueda */
-nav form button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-left: 10px;
-    background-color: #ff5733;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-/* Efecto de hover en el botón de búsqueda */
-nav form button:hover {
-    background-color: #c0392b;
-    transform: scale(1.1);
-}
-
-/* Estilo del título h1 */
-h1 {
+h1{
     text-align: center;
-    color: #333;
-    margin-top: 100px; 
 }
 
 /* Estilo de la galería de películas */
@@ -108,11 +18,13 @@ h1 {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     padding: 20px;
-    margin: 0 10%;
+    margin: 0cm auto 0; 
 }
 
 /* Cada tarjeta de película */
 .movie-card {
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
     border-radius: 10px;
     overflow: hidden;
@@ -120,42 +32,26 @@ h1 {
     transition: transform 0.3s ease-in-out;
 }
 
-.movie-card:hover {
-    transform: translateY(-10px);
-}
-
 /* Imagen de la película */
 .movie-card img {
-    width: 100%;
-    height: auto;
-    border-bottom: 2px solid #eee;
+    width: 100%; 
+    height: 450px; 
+    object-fit: cover; 
+    border-radius: 8px;
+    display: block; 
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
 }
 
-/* Contenido de la tarjeta */
-.movie-card .movie-info {
-    padding: 15px;
+/* Efecto de movimiento y zoom al pasar el mouse */
+.movie-card img:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.movie-card h2 {
-    font-size: 1.2em;
-    margin: 10px 0;
-    color: #555;
-}
-
-.movie-card p {
-    font-size: 0.9em;
-    line-height: 1.4;
-    color: #666;
-}
-
-.movie-card p strong {
-    color: #333;
-}
-
+/* Favicon personalizado */
 .custom-favicon img {
-    width: 48px;  /* Ajusta el tamaño según lo que desees */
-    height: 48px; /* Mantén la proporción si es necesario */
-    object-fit: contain; /* Asegura que la imagen se ajuste dentro del área sin distorsionarse */
-    margin: 10px; /* Puedes agregar espacio alrededor si lo deseas */
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin: 10px;
 }
-

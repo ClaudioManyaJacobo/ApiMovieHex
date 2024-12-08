@@ -1,38 +1,32 @@
-# Ignorar el entorno virtual (asumiendo que lo llamas "venv")
+# Ignorar entorno virtual
 venv/
-*.venv/
+.env/
+__pypackages__/
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # Archivos de configuración de IDEs
 .vscode/
 .idea/
 
-# Archivos compilados de Python
-*.pyc
-*.pyo
-__pycache__/
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
 
-# Archivos de configuración específicos de sistemas operativos
-.DS_Store  # macOS
-Thumbs.db  # Windows
-
-# Archivos de log
-*.log
-
-# Archivos de bases de datos locales
-*.sqlite3
-*.db
-
-# Archivos temporales de editor de texto
-*.swp
-*.swo
-
-# Dependencias instaladas
-*.egg
-*.egg-info
+# Archivos de dependencias generados
+Pipfile.lock
+*.egg-info/
 dist/
 build/
-*.bak
 
-# Archivos de configuración de Python (si usas algún archivo específico)
-*.env
-*.flaskenv
+# Archivos de pruebas de cobertura
+.coverage
+*.cover
+*.hypothesis/
+
+# Otros archivos innecesarios para el repositorio
+*.log
