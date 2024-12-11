@@ -1,24 +1,46 @@
 import requests
 
 API_KEY = "e5d86b492f30d1b695069fefdfe9abd0"
-MOVIE_ID = 550  # Cambia este ID por el de la película que buscas.
+BASE_URL = "https://api.themoviedb.org/3"
 
-url = f"https://api.themoviedb.org/3/movie/{MOVIE_ID}/credits"
-params = {"api_key": API_KEY}
-response = requests.get(url, params=params)
+# Buscar la película "Moana" en español latinoamericano
+search_url = f"{BASE_URL}/search/movie"
+search_params = {
+    "api_key": API_KEY,
+    "query": "Moana",
+    "language": "es-MX"
+}
 
-if response.status_code == 200:
-    credits = response.json()
-    cast = credits.get("cast", [])
-    
-    for actor in cast:
-        name = actor.get("name")
-        profile_path = actor.get("profile_path")
-        if profile_path:
-            profile_url = f"https://image.tmdb.org/t/p/w500{profile_path}"
-        else:
-            profile_url = "https://via.placeholder.com/500x750?text=No+Image"
+search_response = requests.get(search_url, params=search_params)
+
+if search_response.status_code == 200:
+    search_results = search_response.json().get("results", [])
+    if search_results:
+        # Obtener el ID de la película más relevante
+        movie_id = search_results[0]["id"]
         
-        print(f"Actor: {name}, Foto: {profile_url}")
+        # Obtener detalles de la película incluyendo el póster
+        details_url = f"{BASE_URL}/movie/{movie_id}"
+        details_params = {
+            "api_key": API_KEY,
+            "language": "es-MX"
+        }
+        
+        details_response = requests.get(details_url, params=details_params)
+        
+        if details_response.status_code == 200:
+            movie_details = details_response.json()
+            poster_path = movie_details.get("poster_path")
+            
+            if poster_path:
+                poster_url = f"https://image.tmdb.org/t/p/w500{poster_path}"
+            else:
+                poster_url = "https://via.placeholder.com/500x750?text=No+Image"
+            
+            print(f"Póster de 'Moana' (Latino): {poster_url}")
+        else:
+            print("Error al obtener los detalles de la película:", details_response.status_code)
+    else:
+        print("No se encontraron resultados para 'Moana'.")
 else:
-    print("Error al obtener los créditos:", response.status_code)
+    print("Error al realizar la búsqueda:", search_response.status_code)

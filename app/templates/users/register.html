@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/users/register.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    
+    
+</head>
+<body>
+    <div id="snow-container"></div>
+    <script src="{{ url_for('static', filename='js/nieve.js') }}"></script> 
+    <div class="register-container">
+        <h2>Regístrate</h2>
+        <form method="POST" action="{{ url_for('users.register') }}">
+            <input type="text" name="name" placeholder="Nombre" required>
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit">Registrarse</button>
+        </form>
+        
+        <p>¿Ya tienes cuenta? <a href="{{ url_for('users.render_login_form') }}">Inicia sesión aquí</a></p>
+    </div>
+</body>
+</html>

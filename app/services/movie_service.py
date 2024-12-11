@@ -1,13 +1,13 @@
 # application/controllers/movie_service.py
-from domain.movie_repository import MovieRepository
-from domain.movie import Movie
+from domain.movies.movie_repository import MovieRepository
+from domain.movies.movie import Movie
 from typing import List
 
 # Clase para gestionar las películas
 class MovieService:
     def __init__(self, movie_repository: MovieRepository):
         self.movie_repository = movie_repository
-
+        
     # Método para obtener todas las películas
     def get_movies(self) -> List[Movie]:
         return self.movie_repository.get_movies()

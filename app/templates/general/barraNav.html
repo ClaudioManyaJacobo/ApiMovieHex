@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Peliculizate{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/barraNav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general/barraNav.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="{{ url_for('movie_index') }}" class="logo">
+            <a href="{{ url_for('movie.index') }}" class="logo">
                 <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Peliculizate Logo" class="logo-image">
             </a>
             <ul class="nav-links">
-                <li><a href="{{ url_for('movie_index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('movie.index') }}">Inicio</a></li>
                 <li><a href="#about">Sobre Nosotros</a></li>
                 <li><a href="#contact">Contacto</a></li>
                 <li class="dropdown">
@@ -31,6 +31,15 @@
                        value="{{ request.args.get('query', '') }}" required>
                 <button type="submit">Buscar</button>
             </form>
+            <!-- Mostrar el nombre del usuario y el botón de cierre de sesión si está autenticado -->
+            {% if 'user_name' in session %}
+                <div class="user-info">
+                    <span>Bienvenido, {{ session['user_name'] }}</span>
+                    <form action="{{ url_for('users.logout') }}" method="get" style="display:inline;">
+                        <button type="submit">Cerrar sesión</button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </nav>
 

@@ -4,6 +4,7 @@ from app.config.config import Config
 
 class TMDBClient:
     def __init__(self):
+        
         # Inicializar los valores de configuración (API Key, URL base, idioma y sesión)
         self.api_key = Config.API_KEY
         self.base_url = Config.BASE_URL
@@ -12,9 +13,9 @@ class TMDBClient:
 
     # Realiza una solicitud GET a la API de TMDB.
     def _get(self, endpoint, params=None):
-
+        
         url = f"{self.base_url}/{endpoint}"  # Construir la URL completa
-        params = params or {}  # Si no se pasan parámetros, usar un diccionario vacío
+        params = params or {} 
         params.update({
             'api_key': self.api_key,  # Incluir la API Key
             'language': self.language  # Incluir el idioma
@@ -27,7 +28,7 @@ class TMDBClient:
         return {}  # Retornar un diccionario vacío si hubo un error
 
     # Obtiene una lista de películas generales desde la API de TMDB.
-    def general_movies(self, page=5, max_movies=20):
+    def general_movies(self, page=1, max_movies=20):
 
         movies = []  # Lista para almacenar las películas obtenidas
         seen_ids = set()  # Conjunto para asegurarse de no obtener películas duplicadas
@@ -57,6 +58,7 @@ class TMDBClient:
     # Mapea los datos de una película a un formato personalizado.
     def _map_movie_data(self, movie_data):
         actors_director = self.credits_movie(movie_data.get('id'))  # Obtener actores y director de la película
+        
         movie = {
             'title': movie_data.get('title', ''),  # Título de la película
             'overview': movie_data.get('overview', ''),  # Descripción de la película
@@ -90,7 +92,7 @@ class TMDBClient:
                 if member.get('job') == 'Director':
                     director = member.get('name')
                     break  
-
+            
             actors = [{
                 'name': actor['name'],
                 'photo': f"https://image.tmdb.org/t/p/w500{actor['profile_path']}" if actor.get('profile_path') else None,
@@ -117,3 +119,5 @@ class TMDBClient:
                 # Obtener el primer trailer y devolver la URL
                 return f"https://www.youtube.com/watch?v={video_results[0]['key']}"
         return ''
+    
+    

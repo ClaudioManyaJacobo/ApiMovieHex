@@ -1,7 +1,7 @@
 # domain/movie_repository.py
 from abc import ABC, abstractmethod
 from typing import List
-from domain.movie import Movie
+from domain.movies.movie import Movie
 
 # Interfaz para el repositorio de películas
 class MovieRepository(ABC):

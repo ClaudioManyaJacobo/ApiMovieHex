@@ -17,6 +17,6 @@ class Movie:
         self.budget = budget # Presupuesto de la película
         self.revenue = revenue # Ingresos de la película  
         self.original_language = original_language # Idioma original de la película
-        self.director = director
+        self.director = director # Director de la película
     def __repr__(self):
         return f"<Movie {self.title}>"

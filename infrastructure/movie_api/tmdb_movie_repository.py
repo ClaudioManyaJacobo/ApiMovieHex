@@ -1,11 +1,12 @@
 # infrastructure/tmdb_movie_repository.py
-from domain.movie_repository import MovieRepository
-from domain.movie import Movie
+from domain.movies.movie_repository import MovieRepository
+from domain.movies.movie import Movie
 from .tmdb_client import TMDBClient
 from typing import List
 
 # Clase para representar un repositorio de películas de TMDB
 class TMDBMovieRepository(MovieRepository):
+    
     # Inicializamos el cliente de TMDB
     def __init__(self):
         self.tmdb_client = TMDBClient()
@@ -36,8 +37,8 @@ class TMDBMovieRepository(MovieRepository):
             poster_path=f"https://image.tmdb.org/t/p/w500{movie_data.get('poster_path', '')}",
             backdrop_path=f"https://image.tmdb.org/t/p/w1280{movie_data.get('backdrop_path', '')}",
             genres=[genre['name'] for genre in movie_data.get('genres', [])], 
-            actors=actors_and_director['actors'],  # Lista de diccionarios con nombre y foto
-            director=actors_and_director['director'],   # Lista de diccionarios con nombre y foto
+            actors=actors_and_director['actors'], 
+            director=actors_and_director['director'],  
             movie_id=movie_data.get('id'),
             video_url=video_url, 
             runtime=movie_data.get('runtime', 0),

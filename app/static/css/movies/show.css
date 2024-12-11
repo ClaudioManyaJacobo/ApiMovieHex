@@ -400,22 +400,29 @@ body {
     top: 15px;
     left: 15px;
     padding: 10px 20px;
-    background: linear-gradient(45deg, #ff7043, #ff3d00);
+    background: linear-gradient(135deg, #ff5252, #d50000);
     color: #fff;
     font-size: 14px;
     text-transform: uppercase;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 25px;
-    border: 1px solid #bf360c;
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(255, 82, 82, 0.5);
     cursor: pointer;
-    font-family: 'Arial', sans-serif;
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Roboto', sans-serif;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .back-button:hover {
-    background: linear-gradient(45deg, #ff3d00, #bf360c);
-    transform: scale(1.05);
-    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #ff1744, #b71c1c);
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0px 6px 15px rgba(255, 23, 68, 0.6);
 }
+
+.back-button:active {
+    transform: translateY(0) scale(1);
+    background: linear-gradient(135deg, #d50000, #b71c1c);
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.5);
+}
+
